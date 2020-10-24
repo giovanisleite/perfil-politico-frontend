@@ -1241,64 +1241,44 @@ module.exports = function() {
   };
 
   let getDescription = function(filterType, amount) {
-    let phrase = "";
     let prep = { m: "Destes", f: "Destas" };
+    let phrase = prep[currGender] + ", <b>" + amount + "</b> ";
 
     if (amount > 1) {
       if (filterType == "mulheres") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> são mulheres";
+        phrase += "são mulheres";
         currGender = "f";
       } else if (filterType == "homens") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> são homens";
+        phrase += "são homens";
       } else if (filterType == "nunca concorreram") {
-        phrase =
-          prep[currGender] +
-          ", <b>" +
-          amount +
-          "</b> nunca concorreram numa eleição";
+        phrase += "nunca concorreram numa eleição";
       } else if (filterType == "nunca eleitos") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> nunca se elegeram";
+        phrase += "nunca se elegeram";
       } else if (filterType == "já eleitos") {
-        phrase =
-          prep[currGender] +
-          ", <b>" +
-          amount +
-          "</b> já se elegeram anteriormente";
+        phrase += "já se elegeram anteriormente";
       } else if (filterType == "negros ou pardos") {
-        phrase =
-          prep[currGender] +
-          ", <b>" +
-          amount +
-          "</b> são de cor negra, parda ou indígena";
+        phrase += "são de cor negra, parda ou indígena";
       } else if (filterType == "brancos") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> são de cor branca";
+        phrase += "são de cor branca";
       }
     } else {
       if (filterType == "mulheres") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> é mulher";
+        phrase += "é mulher";
         currGender = "f";
       }
       if (filterType == "homens") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> é homem";
+        phrase += "é homem";
         currGender = "m";
       } else if (filterType == "nunca concorreram") {
-        phrase =
-          prep[currGender] +
-          ", <b>" +
-          amount +
-          "</b> nunca concorreu numa eleição";
+        phrase += "nunca concorreu numa eleição";
       } else if (filterType == "nunca eleitos") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> nunca se elegeu";
+        phrase += "nunca se elegeu";
       } else if (filterType == "já eleitos") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> já se elegeu";
+        phrase += "já se elegeu";
       } else if (filterType == "negros ou pardos") {
-        phrase =
-          prep[currGender] +
-          ", <b>" +
-          amount +
-          "</b> é de cor negra, parda ou indígena";
+        phrase += "é de cor negra, parda ou indígena";
       } else if (filterType == "brancos") {
-        phrase = prep[currGender] + ", <b>" + amount + "</b> é de cor branca";
+        phrase += "é de cor branca";
       }
     }
 
