@@ -1243,44 +1243,47 @@ module.exports = function() {
 
   let getDescription = function(filterType, amount) {
     let prep = { m: "Destes", f: "Destas" };
-    let phrase = prep[currGender] + ", <b>" + amount + "</b> ";
-
-    if (amount > 1) {
-      if (filterType == "mulheres") {
-        phrase += "são mulheres";
-      } else if (filterType == "homens") {
-        phrase += "são homens";
-      } else if (filterType == "nunca concorreram") {
-        phrase += "nunca concorreram numa eleição";
-      } else if (filterType == "nunca eleitos") {
-        phrase += "nunca se elegeram";
-      } else if (filterType == "já eleitos") {
-        phrase += "já se elegeram anteriormente";
-      } else if (filterType == "negros ou pardos") {
-        phrase += "são de cor negra, parda ou indígena";
-      } else if (filterType == "brancos") {
-        phrase += "são de cor branca";
-      }
-    } else {
-      if (filterType == "mulheres") {
-        phrase += "é mulher";
-      }
-      if (filterType == "homens") {
-        phrase += "é homem";
-      } else if (filterType == "nunca concorreram") {
-        phrase += "nunca concorreu numa eleição";
-      } else if (filterType == "nunca eleitos") {
-        phrase += "nunca se elegeu";
-      } else if (filterType == "já eleitos") {
-        phrase += "já se elegeu";
-      } else if (filterType == "negros ou pardos") {
-        phrase += "é de cor negra, parda ou indígena";
-      } else if (filterType == "brancos") {
-        phrase += "é de cor branca";
-      }
-    }
+    let phrase =
+      prep[currGender] +
+      ", <b>" +
+      amount +
+      "</b> " +
+      getFilterDescription(filterType, amount);
 
     return phrase;
+  };
+
+  let getFilterDescription = function(filterType, amount) {
+    return {
+      mulheres: {
+        plural: "são mulheres",
+        singular: "é mulher"
+      },
+      homens: {
+        plural: "são homens",
+        singular: "é homem"
+      },
+      "negros ou pardos": {
+        plural: "são de cor negra, parda ou indígena",
+        singular: "é de cor negra, parda ou indígena"
+      },
+      brancos: {
+        plural: "são de cor branca",
+        singular: "é de cor branca"
+      },
+      "nunca concorreram": {
+        plural: "nunca concorreram numa eleição",
+        singular: "nunca concorreu numa eleição"
+      },
+      "nunca eleitos": {
+        plural: "nunca se elegeram",
+        singular: "nunca se elegeu"
+      },
+      "já eleitos": {
+        plural: "já se elegeram anteriormente",
+        singular: "já se elegeu"
+      }
+    }[filterType][amount > 1 ? "plural" : "singular"];
   };
 
   let updateCurrentGender = function(filterType) {
