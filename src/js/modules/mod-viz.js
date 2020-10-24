@@ -342,6 +342,7 @@ module.exports = function() {
       animateRemoved(prevBlock, removed);
       h2Title = selectedOption.innerHTML;
       text = getDescription(filterType, filteredData.length);
+      updateCurrentGender(filterType);
     }
 
     if (filteredData.length == 0) {
@@ -1247,7 +1248,6 @@ module.exports = function() {
     if (amount > 1) {
       if (filterType == "mulheres") {
         phrase += "são mulheres";
-        currGender = "f";
       } else if (filterType == "homens") {
         phrase += "são homens";
       } else if (filterType == "nunca concorreram") {
@@ -1264,11 +1264,9 @@ module.exports = function() {
     } else {
       if (filterType == "mulheres") {
         phrase += "é mulher";
-        currGender = "f";
       }
       if (filterType == "homens") {
         phrase += "é homem";
-        currGender = "m";
       } else if (filterType == "nunca concorreram") {
         phrase += "nunca concorreu numa eleição";
       } else if (filterType == "nunca eleitos") {
@@ -1283,6 +1281,15 @@ module.exports = function() {
     }
 
     return phrase;
+  };
+
+  let updateCurrentGender = function(filterType) {
+    const genders = {
+      mulheres: "f",
+      homens: "m"
+    };
+
+    currGender = genders[filterType] || currGender;
   };
 
   let dispatchEvent = function(target, evt) {
