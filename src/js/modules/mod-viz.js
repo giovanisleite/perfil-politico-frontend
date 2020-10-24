@@ -341,7 +341,7 @@ module.exports = function() {
     if (filterType != "") {
       animateRemoved(prevBlock, removed);
       h2Title = selectedOption.innerHTML;
-      text = getDescription(filterType, filteredData.length);
+      text = getDescription(filteredData.length);
       updateCurrentGender(filterType);
     }
 
@@ -1241,36 +1241,67 @@ module.exports = function() {
     }
   };
 
-  let getDescription = function(filterType, amount) {
+  let getDescription = function(amount) {
     let prep = { m: "Destes", f: "Destas" };
+
+    let personDescription = getFiltersDescriptionRelatedToPerson(
+      window.contextFilters,
+      amount
+    );
+
+    let politicalCareerDescription = getFilterDescriptionRelatedToPoliticalCareer(
+      window.contextFilters,
+      amount
+    );
+
     let phrase =
       prep[currGender] +
       ", <b>" +
       amount +
       "</b> " +
-      getFilterDescription(filterType, amount);
+      personDescription +
+      " " +
+      (personDescription && politicalCareerDescription ? "que " : "") +
+      politicalCareerDescription;
 
     return phrase;
   };
 
-  let getFilterDescription = function(filterType, amount) {
+  let getFiltersDescriptionRelatedToPerson = function(filters, amount) {
+    if (
+      !["mulheres", "homens", "brancos", "negros ou pardos"].some(value =>
+        filters.includes(value)
+      )
+    )
+      return "";
+
+    let phrase = amount > 1 ? "são" : "é";
+
+    if (filters.includes("mulheres")) {
+      phrase += amount > 1 ? " mulheres" : " mulher";
+    } else if (filters.includes("homens")) {
+      phrase += amount > 1 ? " homens" : " homem";
+    }
+
+    if (filters.includes("negros ou pardos")) {
+      phrase += " de cor negra, parda ou indígena";
+    } else if (filters.includes("brancos")) {
+      phrase += " de cor branca";
+    }
+
+    return phrase;
+  };
+
+  let getFilterDescriptionRelatedToPoliticalCareer = function(filters, amount) {
+    const filterApplied = filters
+      .reverse()
+      .find(element =>
+        ["nunca concorreram", "nunca eleitos", "já eleitos"].includes(element)
+      );
+
+    if (!filterApplied) return "";
+
     return {
-      mulheres: {
-        plural: "são mulheres",
-        singular: "é mulher"
-      },
-      homens: {
-        plural: "são homens",
-        singular: "é homem"
-      },
-      "negros ou pardos": {
-        plural: "são de cor negra, parda ou indígena",
-        singular: "é de cor negra, parda ou indígena"
-      },
-      brancos: {
-        plural: "são de cor branca",
-        singular: "é de cor branca"
-      },
       "nunca concorreram": {
         plural: "nunca concorreram numa eleição",
         singular: "nunca concorreu numa eleição"
@@ -1283,7 +1314,7 @@ module.exports = function() {
         plural: "já se elegeram anteriormente",
         singular: "já se elegeu"
       }
-    }[filterType][amount > 1 ? "plural" : "singular"];
+    }[filterApplied][amount > 1 ? "plural" : "singular"];
   };
 
   let updateCurrentGender = function(filterType) {
